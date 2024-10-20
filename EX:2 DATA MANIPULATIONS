@@ -1,0 +1,36 @@
+CREATE TABLE emplo (
+    empid NUMBER(4) PRIMARY KEY,
+    f_name VARCHAR2(10) NOT NULL,
+    l_name VARCHAR2(10) NOT NULL,
+    jobid VARCHAR2(9),
+    managerid NUMBER(4),
+    hiredate DATE,
+    salary NUMBER(7,2),
+    deptid NUMBER(2)
+);
+Desc emplo;
+SELECT empid, f_name, l_name, salary FROM emplo;
+SELECT * FROM emplo WHERE managerid = 100;
+SELECT f_name, l_name FROM emplo WHERE salary >= 4800;
+SELECT * FROM emplo WHERE l_name = 'AUSTIN';
+SELECT f_name, l_name FROM emplo WHERE deptid IN (60, 70, 80);
+SELECT DISTINCT managerid FROM emplo;
+
+Create table emps (empno number (6) , empname varchar(20) , job varchar(25) , basic int, DA number(11,2) default NULL , HRA number(11,2) default NULL, PF int , GF number(11,2) default NULL, NP number(11,2) default NULL);
+begin
+insert into emps (empno , empname , job , basic , PF ) values (01 , 'amirtha' , 'eng' , 10000 , 1500);
+insert into emps (empno , empname , job , basic , PF ) values (02 , 'varsha' , 'doc' , 20000 , 1600);
+insert into emps (empno , empname , job , basic , PF ) values (03 , 'anirudh' , 'sf' , 30000 , 1700);
+insert into emps (empno , empname , job , basic , PF ) values (04 , 'anu' , 'teacher' , 40000 , 1800);
+insert into emps (empno , empname , job , basic , PF ) values (05 , 'sam' , 'mech' , 50000 , 1900);
+insert into emps (empno , empname , job , basic , PF ) values (06 , 'arav' , 'prof' , 60000 , 2000);
+insert into emps (empno , empname , job , basic , PF ) values (07 , 'arith' , 'it' , 70000 , 2100);
+insert into emps (empno , empname , job , basic , PF ) values (08 , 'aks' , 'nurse' , 80000 , 2200);
+insert into emps (empno , empname , job , basic , PF ) values (09 , 'arul' , 'med' , 90000 , 2300);
+insert into emps (empno , empname , job , basic , PF ) values (10 , 'deeps' , 'tech' , 20000 , 2400);
+end;
+/
+select * from emps;
+update emps set DA = 0.30*basic , HRA = 0.40 *basic;
+update emps set GF=(DA+HRA+PF+basic),NP=(DA+HRA+basic);
+alter table emps add departid int;
