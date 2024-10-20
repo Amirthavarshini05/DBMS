@@ -1,0 +1,23 @@
+-- Create Tables
+CREATE TABLE Departments (
+    department_id NUMBER PRIMARY KEY,
+    department_name VARCHAR2(100) NOT NULL
+);
+
+-- Insert Sample Data
+begin
+INSERT INTO Departments (department_id, department_name) VALUES (10, 'HR');
+INSERT INTO Departments (department_id, department_name) VALUES (11, 'Sales');
+INSERT INTO Departments (department_id, department_name) VALUES (20, 'IT');
+INSERT INTO Departments (department_id, department_name) VALUES (21, 'Finance');
+INSERT INTO Departments (department_id, department_name) VALUES (30, 'Operations');
+INSERT INTO Departments (department_id, department_name) VALUES (31, 'Marketing');
+INSERT INTO Departments (department_id, department_name) VALUES (40, 'Legal');
+end;
+/
+
+select *from Departments;
+
+-- Query to find departments without the job ID 'st_clerk'
+SELECT department_id
+FROM Departments
