@@ -1,0 +1,40 @@
+-- Create Tables
+CREATE TABLE Departments (
+    department_id NUMBER PRIMARY KEY,
+    department_name VARCHAR2(100) NOT NULL
+);
+
+CREATE TABLE Jobs (
+    job_id VARCHAR2(20),
+    department_id NUMBER,
+    CONSTRAINT pk_jobs PRIMARY KEY (job_id, department_id),
+    CONSTRAINT fk_department FOREIGN KEY (department_id) REFERENCES Departments(department_id)
+);
+
+-- Insert Sample Data
+begin
+INSERT INTO Departments (department_id, department_name) VALUES (10, 'HR');
+INSERT INTO Departments (department_id, department_name) VALUES (11, 'Sales');
+INSERT INTO Departments (department_id, department_name) VALUES (20, 'IT');
+INSERT INTO Departments (department_id, department_name) VALUES (21, 'Finance');
+INSERT INTO Departments (department_id, department_name) VALUES (30, 'Operations');
+INSERT INTO Departments (department_id, department_name) VALUES (31, 'Marketing');
+INSERT INTO Departments (department_id, department_name) VALUES (40, 'Legal');
+end;
+/
+
+begin
+INSERT INTO Jobs (job_id, department_id) VALUES ('st_clerk', 10);
+INSERT INTO Jobs (job_id, department_id) VALUES ('st_clerk', 11);
+INSERT INTO Jobs (job_id, department_id) VALUES ('st_clerk', 20);
+INSERT INTO Jobs (job_id, department_id) VALUES ('st_clerk', 21);
+INSERT INTO Jobs (job_id, department_id) VALUES ('st_manager', 30);
+INSERT INTO Jobs (job_id, department_id) VALUES ('st_clerk', 31);
+INSERT INTO Jobs (job_id, department_id) VALUES ('st_clerk', 40);
+end;
+/
+select *from jobs;
+
+-- Query to find departments without the job ID 'st_clerk'
+SELECT department_id
+FROM Departments
