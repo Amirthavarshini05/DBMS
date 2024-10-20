@@ -1,0 +1,127 @@
+CREATE TABLE departments (
+    department_id NUMBER PRIMARY KEY,
+    department_name VARCHAR2(50),
+    location_id NUMBER
+);
+
+CREATE TABLE employees (
+    employee_id NUMBER PRIMARY KEY,
+    last_name VARCHAR2(50),
+    job_id VARCHAR2(50),
+    department_id NUMBER,
+    hire_date DATE,
+    salary NUMBER,
+    commission_pct NUMBER,
+    manager_id NUMBER,
+    FOREIGN KEY (department_id) REFERENCES departments(department_id)
+);
+
+CREATE TABLE jobs (
+    job_id VARCHAR2(50) PRIMARY KEY,
+    job_title VARCHAR2(50),
+    department_id NUMBER,
+    FOREIGN KEY (department_id) REFERENCES departments(department_id)
+);
+
+CREATE TABLE job_grades (
+    grade_level VARCHAR2(10),
+    lowest_salary NUMBER,
+    highest_salary NUMBER
+);
+
+CREATE TABLE locations (
+    location_id NUMBER PRIMARY KEY,
+    city VARCHAR2(50)
+);
+
+
+INSERT INTO departments (department_id, department_name, location_id) VALUES (10, 'Administration', 100);
+INSERT INTO departments (department_id, department_name, location_id) VALUES (20, 'Marketing', 200);
+INSERT INTO departments (department_id, department_name, location_id) VALUES (30, 'Sales', 300);
+INSERT INTO departments (department_id, department_name, location_id) VALUES (40, 'Human Resources', 400);
+INSERT INTO departments (department_id, department_name, location_id) VALUES (80, 'IT', 500);
+
+INSERT INTO employees VALUES (1, 'King', 'AD_PRES', 10, TO_DATE('2003-06-17', 'YYYY-MM-DD'), 5000, NULL, NULL);
+INSERT INTO employees  VALUES (2, 'Davies', 'AD_VP', 10, TO_DATE('2004-06-17', 'YYYY-MM-DD'), 3000, NULL, 1);
+INSERT INTO employees VALUES (3, 'Matos', 'IT_PROG', 80, TO_DATE('2005-06-17', 'YYYY-MM-DD'), 2500, 0.1, 2);
+INSERT INTO employees VALUES (4, 'Smith', 'IT_PROG', 80, TO_DATE('2006-06-17', 'YYYY-MM-DD'), 3000, 0.2, 2);
+
+INSERT INTO jobs VALUES ('AD_PRES', 'President', 10);
+INSERT INTO jobs  VALUES ('AD_VP', 'Vice President', 10);
+INSERT INTO jobs  VALUES ('IT_PROG', 'IT Programmer', 80);
+
+INSERT INTO job_grades  VALUES ('A', 3000, 5000);
+INSERT INTO job_grades  VALUES ('B', 2000, 2999);
+
+INSERT INTO locations VALUES (100, 'New York');
+INSERT INTO locations  VALUES (200, 'Los Angeles');
+INSERT INTO locations  VALUES (300, 'Toronto');
+INSERT INTO locations  VALUES (400, 'Chicago');
+INSERT INTO locations  VALUES (500, 'San Francisco');
+
+
+
+SELECT e.last_name, e.department_id, d.department_name
+FROM employees e
+JOIN departments d ON e.department_id = d.department_id;
+
+SELECT DISTINCT j.job_title, d.location_id
+FROM jobs j
+JOIN departments d ON j.department_id = d.department_id
+WHERE d.department_id = 80;
+
+SELECT e.last_name, d.department_name, d.location_id, l.city
+FROM employees e
+JOIN departments d ON e.department_id = d.department_id
+JOIN locations l ON d.location_id = l.location_id
+WHERE e.commission_pct IS NOT NULL;
+
+SELECT e.last_name, d.department_name
+FROM employees e
+JOIN departments d ON e.department_id = d.department_id
+WHERE LOWER(e.last_name) LIKE '%a%';
+
+SELECT e.last_name, e.job_id, e.department_id, d.department_name
+FROM employees e
+JOIN departments d ON e.department_id = d.department_id
+JOIN locations l ON d.location_id = l.location_id
+WHERE l.city = 'Toronto';
+
+SELECT e.last_name AS Employee, e.employee_id AS "Emp#",
+       m.last_name AS Manager, m.employee_id AS "Mgr#"
+FROM employees e
+LEFT JOIN employees m ON e.manager_id = m.employee_id;
+
+SELECT e.last_name AS Employee, e.employee_id AS "Emp#",
+       m.last_name AS Manager
+FROM employees e
+LEFT JOIN employees m ON e.manager_id = m.employee_id
+ORDER BY e.employee_id;
+
+SELECT e1.last_name AS Employee, e1.department_id AS "Dept#", e2.last_name AS "Colleague"
+FROM employees e1
+JOIN employees e2 ON e1.department_id = e2.department_id
+WHERE e1.employee_id <> e2.employee_id;
+
+SELECT *
+FROM USER_TAB_COLUMNS
+WHERE table_name = 'JOB_GRADES';
+
+SELECT e.last_name, e.job_id, d.department_name, e.salary, j.grade_level
+FROM employees e
+JOIN departments d ON e.department_id = d.department_id
+JOIN job_grades j ON e.salary BETWEEN j.lowest_salary AND j.highest_salary;
+
+SELECT e.last_name, e.hire_date
+FROM employees e
+WHERE e.hire_date > (
+    SELECT hire_date
+    FROM employees
+    WHERE last_name = 'Davies'
+);
+
+SELECT e.last_name AS Employee, e.hire_date AS "Emp Hired",
+       m.last_name AS Manager, m.hire_date AS "Mgr Hired"
+FROM employees e
+JOIN employees m ON e.manager_id = m.employee_id
+WHERE e.hire_date < m.hire_date;
