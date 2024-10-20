@@ -1,0 +1,26 @@
+create table emploss ( empno int not null , empname varchar(20) , deptno int , department varchar(20));
+insert into emploss values ( 01 ,'anirudh' , 66 , 'medical');
+insert into emploss values ( 02 ,'ani' , 60 , 'engineer');
+insert into emploss values ( 01 ,'anu' , 63, 'teacher');
+select * from emploss;
+create view employee_uv as select empno , empname , deptno from emploss ;
+//create view employee_uv as select empno , empname as employee, deptno from emploss ;
+create or replace view employee_uv as select empno , empname as employee , deptno from emploss ;
+select * from employee_uv;
+select * from user_views;
+select view_name ,text from user_views;
+select employee,deptno from employee_uv;
+drop view employee_uv;
+
+
+create table depts50 ( empno int not null , emplname varchar(20) , deptno int , department varchar(20));
+insert into depts50 values ( 01 ,'anil' , 66 , 'medical');
+insert into depts50 values ( 02 ,'anru' , 60 , 'engineer');
+insert into depts50 values ( 01 ,'annar' , 63, 'teacher');
+select * from depts50;
+create view dept50 as select empno as emno, emplname as employee, deptno as depno from depts50 with read only;
+desc dept50;
+select * from dept50;
+update dept50 set employee = 'matos' where depno = 66;
+`
+drop view dept50;
