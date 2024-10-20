@@ -1,0 +1,56 @@
+-- 1. Create the my_employee table
+CREATE TABLE my_employee (
+    id NUMBER(4) NOT NULL,
+    last_name VARCHAR(25),
+    first_name VARCHAR(25),
+    user_id VARCHAR(25),
+    salary NUMBER(9,2)
+);
+
+-- 2. Insert data into my_employee
+BEGIN
+    INSERT INTO my_employee VALUES (1, 'Pati', 'Ralph', 'rpati', 895);
+    INSERT INTO my_employee VALUES (2, 'Dancs', 'Betty', 'bdancs', 860);
+END;
+
+-- 3. Select all data from my_employee
+SELECT * FROM my_employee;
+
+-- 4. Insert more data into my_employee
+BEGIN
+    INSERT INTO my_employee VALUES (3, 'Biri', 'Ben', NULL, 1100);
+    INSERT INTO my_employee VALUES (4, 'Newman', 'Chad', 'cnewman', 750);
+END;
+
+-- 5. Update user_id using a combination of first and last name
+UPDATE my_employee
+SET user_id = CONCAT(SUBSTR(first_name, 1, 1), SUBSTR(last_name, 1, 7));
+
+-- 6. Delete employee where last name is 'Dancs' and first name is 'Betty'
+DELETE FROM my_employee 
+WHERE last_name = 'Dancs' AND first_name = 'Betty';
+
+-- 7. Update employee data where id = 4
+UPDATE my_employee
+SET last_name = NULL, first_name = NULL, user_id = NULL, salary = NULL
+WHERE id = 4;
+
+-- OR delete the record with id = 4
+DELETE FROM my_employee WHERE id = 4;
+
+-- 8. Commit the transaction
+COMMIT;
+
+-- 9. Update employee with id = 3, setting last name to 'Dread'
+UPDATE my_employee 
+SET last_name = 'Dread' 
+WHERE id = 3;
+
+-- 10. Update user_id for employee with id = 3
+UPDATE my_employee
+SET user_id = CONCAT(SUBSTR(first_name, 1, 1), SUBSTR(last_name, 1, 7));
+
+-- 11. Update the salary for employee where id = 3 to 1000
+UPDATE my_employee
+SET salary = 1000
+WHERE id = 3;
