@@ -1,0 +1,75 @@
+create table empls ( empid int , jobid int , deptid int);
+begin
+insert into empls values (01,101,1010);
+insert into empls values (02,102,1021);
+insert into empls values (03,103,1032);
+insert into empls values (04,104,1043);
+end;
+/
+create table jobshis ( empid int , jobid int , deptid int);
+begin
+insert into jobshis values (01,101,1010);
+insert into jobshis values (02,105,1021);
+insert into jobshis values (03,103,1032);
+insert into jobshis values (04,106,1043);                                                  
+end;
+/
+select empid from empls union all select empid from empls;
+select empid,jobid from empls union select empid,jobid from jobshis;
+select empid,jobid from empls intersect select empid,jobid from jobshis;
+select empid,deptid,jobid from empls union select empid,deptid,jobid from jobshis order by jobid;
+select empid,deptid,jobid from empls union all select empid,deptid,jobid from jobshis;
+select empid,deptid,jobid from empls intersect select empid,deptid,jobid from jobshis order by jobid;
+select empid,deptid,jobid from empls minus select empid,deptid,jobid from jobshis;
+select empid,deptid,jobid from jobshis minus select empid,deptid,jobid from empls;
+
+
+--MINUS
+
+-- Create the Countries table
+CREATE TABLE Countries (
+    country_id NUMBER PRIMARY KEY,
+    country_name VARCHAR2(100) NOT NULL
+);
+
+-- Insert sample data into Countries
+begin
+INSERT INTO Countries (country_id, country_name) VALUES (1, 'USA');
+INSERT INTO Countries (country_id, country_name) VALUES (2, 'Canada');
+INSERT INTO Countries (country_id, country_name) VALUES (3, 'Germany');
+INSERT INTO Countries (country_id, country_name) VALUES (4, 'France');
+INSERT INTO Countries (country_id, country_name) VALUES (5, 'Italy');
+end;
+/
+
+-- Create the Departments table
+CREATE TABLE Departments1 (
+    department_id NUMBER PRIMARY KEY,
+    department_name VARCHAR2(100) NOT NULL,
+    country_id NUMBER,
+    CONSTRAINT fk_country FOREIGN KEY (country_id) REFERENCES Countries(country_id)
+);
+
+
+-- Insert sample data into Departments
+begin
+INSERT INTO Departments1 (department_id, department_name, country_id) VALUES (10, 'HR', 1);
+INSERT INTO Departments1 (department_id, department_name, country_id) VALUES (20, 'IT', 2);
+INSERT INTO Departments1 (department_id, department_name, country_id) VALUES (30, 'Operations', 3);
+end;
+/
+
+select *from departments1;
+
+-- Query to find countries with no departments
+SELECT country_id, country_name
+FROM Countries
+WHERE country_id NOT IN (
+    SELECT DISTINCT country_id
+    FROM Departments1
+);
+
+
+SELECT country_id, country_name
+FROM Countries
+where c.country_id not in (select.distinct country_id from departments1);
