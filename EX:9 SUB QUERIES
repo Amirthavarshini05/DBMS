@@ -1,0 +1,52 @@
+-- Create the employees table
+CREATE TABLE employees (
+    emp_id INT PRIMARY KEY,
+    eno INT,
+    name VARCHAR(100),
+    dept VARCHAR(100),
+    sal DECIMAL(10, 2),
+    dno INT,
+    jid INT,
+    loc_id INT,
+    hire_date DATE
+);
+
+-- Insert sample data into employees table
+INSERT INTO employees (emp_id, eno, name, dept, sal, dno, jid, loc_id, hire_date) VALUES
+(1, 101, 'John Zlotkey', 'HR', 50000, 10, 1010, 1700, '2015-03-10'),
+(2, 102, 'Jane King', 'HR', 55000, 10, 1020, 1700, '2016-04-15'),
+(3, 103, 'Sam Upton', 'Finance', 60000, 20, 1030, 1600, '2017-06-20'),
+(4, 107, 'Emma Watson', 'Finance', 65000, 20, 1070, 1600, '2021-05-30');
+
+
+SELECT name 
+FROM employees 
+WHERE dept IN (SELECT dept FROM employees WHERE name = 'Zlotkey');
+
+SELECT eno, name, sal 
+FROM employees 
+WHERE sal > (SELECT AVG(sal) FROM employees) 
+ORDER BY sal;
+
+SELECT eno, name 
+FROM employees 
+WHERE name LIKE '%u%' 
+AND eno IN (SELECT eno FROM employees WHERE name LIKE '%u%');
+
+SELECT name, dno, jid 
+FROM employees 
+WHERE loc_id = 1700;
+
+SELECT name, sal 
+FROM employees 
+WHERE emp_id IN (SELECT emp_id FROM manager WHERE name = 'King');
+
+SELECT dno, name, jid 
+FROM employees 
+WHERE emp_id IN (SELECT emp_id FROM dept WHERE dname = 'Executive');
+
+SELECT eno, name, salary 
+FROM employees 
+WHERE sal > (SELECT AVG(sal) FROM employees) 
+AND eno IN (SELECT eno FROM employees WHERE name LIKE '%u%');
+
